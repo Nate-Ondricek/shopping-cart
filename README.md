@@ -7,7 +7,7 @@
 Clone or download from [GitHub source](https://github.com/Nate-Ondricek/shopping-cart), then navigate into the project repository:
 
 ```sh
-cd shopping-cart
+cd shopping_cart
 ```
 
 ## Usage

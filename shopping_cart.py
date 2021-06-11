@@ -1,4 +1,5 @@
-# shopping_cart.py
+# data source
+# can replace this with a CSV file later
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -23,7 +24,7 @@ products = [
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-
+# important function for formatting currency
 def to_usd(my_price):
     """
     Converts a numeric value to usd-formatted string, for printing and display purposes.
@@ -37,13 +38,13 @@ def to_usd(my_price):
     return f"${my_price:,.2f}" #> $12,000.71
 
 
-# TODO: write some Python code here to produce the desired output
+#User Input section
+#define subtotal price variable
+subtotal_price = 0
 
-print(products)
 
-# some code from class that might be helpful-------
-# 1) capture product ids until we're done
-# (use infinite while loop)
+# capture product ids until we're done
+
 selected_ids = []
 while True:
     selected_id = input("Please select / scan a valid product id: ")
@@ -51,20 +52,27 @@ while True:
         break
     else:
         selected_ids.append(selected_id)
-    print(selected_id)
+    print("You selected " + selected_id)
 print("WE HAVE REACHED THE END OF THE LOOP")
 
+#the following items were not found in the inventory and have been ignored (XYZ)
 
 # NB: all inputs end up as strings
 
-# 2) Perform product lookups to determine what the product's name and price are
+
+
+
+# Perform product lookups to determine what the product's name and price are
 
 for selected_id in selected_ids:
-    print(selected_id)
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    print(matching_product["name"], matching_product["price"])
+    subtotal_price = subtotal_price + matching_product["price"]
+    print(selected_id, matching_product["name"], matching_product["price"])
 
+# Print the subtotal
 
+print("Total Price: " + str(subtotal_price))
 
+# Receipt generation section
 
