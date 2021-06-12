@@ -47,13 +47,11 @@ subtotal_price = 0
 
 selected_ids = []
 while True:
-    selected_id = input("Please select / scan a valid product id: ")
+    selected_id = input("Please select / scan a valid product id, or 'DONE' when complete ")
     if selected_id.upper() == "DONE":
         break
     else:
         selected_ids.append(selected_id)
-    print("You selected " + selected_id)
-print("WE HAVE REACHED THE END OF THE LOOP")
 
 #the following items were not found in the inventory and have been ignored (XYZ)
 
@@ -68,11 +66,34 @@ for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     subtotal_price = subtotal_price + matching_product["price"]
-    print(selected_id, matching_product["name"], matching_product["price"])
 
-# Print the subtotal
 
-print("Total Price: " + str(subtotal_price))
 
+
+# Prompt the formatted receipt template
+
+print("-------------------")
+print("Green Valley Book Fair")
+print("https://gobookfair.com/")
+print("800-385-0099")
+print("Checkout Time")
+print("-------------------")
+print("Your Items:")
+
+# Print off list of items
+for selected_id in selected_ids:
+    print("+ ", matching_product["name"], matching_product["price"])
+
+print("-------------------")
+print("Subtotal: " + to_usd(subtotal_price))
+
+Sales_Tax = subtotal_price*.0875
+print("Sales tax (8.75%):", to_usd(Sales_Tax)) #calculate tax
+
+Grand_Total = subtotal_price+Sales_Tax
+print("Total:", to_usd(Grand_Total)) #add subtotal + sales tax
+
+print("-------------------")
+print("Thank you for your business. Please come again!")
 # Receipt generation section
 
