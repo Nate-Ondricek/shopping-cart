@@ -1,5 +1,4 @@
 # data source
-# can replace this with a CSV file later
 
 import datetime as dt
 import os
@@ -71,10 +70,7 @@ while True:
         print("Invalid ID, please try again")
 
 # Helper file from prof. Repo: https://github.com/s2t2/shopping-cart-screencast/blob/master/shopping_cart.py#L31
-
-
 # NB: all inputs end up as strings
-
 
 # Formatted receipt 
 
@@ -112,5 +108,3 @@ print("Total:", to_usd(Grand_Total)) #add subtotal + sales tax
 
 print("-------------------")
 print("Thank you for your business. Please come again!")
-# Receipt generation section
-
