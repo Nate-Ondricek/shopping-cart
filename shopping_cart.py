@@ -1,6 +1,13 @@
 # data source
 # can replace this with a CSV file later
 
+import datetime as dt
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -24,7 +31,7 @@ products = [
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-# important function for formatting currency
+# Function for formatting currency
 def to_usd(my_price):
     """
     Converts a numeric value to usd-formatted string, for printing and display purposes.
@@ -41,24 +48,44 @@ def to_usd(my_price):
 #User Input section
 #define subtotal price variable
 subtotal_price = 0
+checkout_start_at = dt.datetime.now() # current date and time, see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/datetime.md
 
 
 # capture product ids until we're done
+# creating a set of all of the unique IDs
+# so we can compare our selected IDs against this set
+# courtsey of some pair programming with Tanner T. 
+
+all_ids = {str(p["id"]) for p in products}
 
 selected_ids = []
 while True:
     selected_id = input("Please select / scan a valid product id, or 'DONE' when complete ")
     if selected_id.upper() == "DONE":
         break
-    else:
+    elif selected_id in all_ids:
+        # id is valid!
         selected_ids.append(selected_id)
+    else:
+        # id is not valid!
+        print("Invalid ID, please try again")
 
-#the following items were not found in the inventory and have been ignored (XYZ)
+# Helper file from prof. Repo: https://github.com/s2t2/shopping-cart-screencast/blob/master/shopping_cart.py#L31
+
 
 # NB: all inputs end up as strings
 
 
+# Formatted receipt 
 
+print("-------------------")
+print("Green Valley Book Fair")
+print("https://gobookfair.com/")
+print("800-385-0099")
+print("-------------------")
+print("Checkout Date & Time: " + checkout_start_at.strftime("%Y-%m-%d %I:%M %p"))
+print("-------------------")
+print("Your Items:")
 
 # Perform product lookups to determine what the product's name and price are
 
@@ -66,29 +93,19 @@ for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     subtotal_price = subtotal_price + matching_product["price"]
+    print(" + " + matching_product["name"] + " (" + to_usd(matching_product["price"]) + ")")
 
-
-
-
-# Prompt the formatted receipt template
-
-print("-------------------")
-print("Green Valley Book Fair")
-print("https://gobookfair.com/")
-print("800-385-0099")
-print("Checkout Time")
-print("-------------------")
-print("Your Items:")
-
-# Print off list of items
-for selected_id in selected_ids:
-    print("+ ", matching_product["name"], matching_product["price"])
 
 print("-------------------")
 print("Subtotal: " + to_usd(subtotal_price))
 
-Sales_Tax = subtotal_price*.0875
-print("Sales tax (8.75%):", to_usd(Sales_Tax)) #calculate tax
+# TAX_RATE (all caps) = ENV variable
+# tax_rate (lower case) is variable within this script
+
+tax_rate = float(os.getenv("TAX_RATE"))
+
+Sales_Tax = subtotal_price* tax_rate
+print(f"Sales Tax ({tax_rate:.2%}):", to_usd(Sales_Tax))
 
 Grand_Total = subtotal_price+Sales_Tax
 print("Total:", to_usd(Grand_Total)) #add subtotal + sales tax
